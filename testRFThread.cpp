@@ -10,7 +10,7 @@
 using namespace std;
 
 #define line_len 2000
-#define thread_num 10
+#define thread_num 4
 
 struct Param {
 
@@ -38,10 +38,14 @@ void* threadFn(void* ptr) {
 	const char* modelName = str.c_str();
 
 	rf->saveModel(modelName);
+	delete rf;
 
 }
 
 int main(int argc, char* argv[]) {
+
+	time_t start_time, end_time;
+	start_time = time(NULL);
 
 	float** train_datas = new float*[1866819];
 	int* train_labels = new int[1866819];
@@ -211,7 +215,7 @@ int main(int argc, char* argv[]) {
 	}
 	rf->predict(test_datas, results, 282796);
 
-	fout.open("submission.txt");
+	fout.open("submission1.txt");
 	fout << "id,label" << endl;
 	for (int i = 0 ; i < 282796; i++) {
 		fout << i << ',' << results[i] << endl;
@@ -223,6 +227,11 @@ int main(int argc, char* argv[]) {
 		delete [] test_datas[i];
 	}
 	delete [] test_datas;
+
+	end_time = time(NULL);
+
+	cout << "time: " << end_time - start_time << endl;
+
 	return 0;
 
 }

@@ -165,6 +165,9 @@ void RandomForest::generateForest(int maxDepth, int minLeafSample, float minInfo
 		trainSample->releaseIndex();
 		delete trainSample;
 	}
+	_trainSample->releaseIndex();
+	delete _trainSample;
+	_trainSample = NULL;
 
 }
 

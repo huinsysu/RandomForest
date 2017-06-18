@@ -15,8 +15,6 @@ int cmp(const void* a, const void* b) {
 Node::Node(Sample* sample, int classNum) {
 
 	_sample = new Sample(sample);
-	// cout << "b5" << endl;
-	// cout << _sample->_selectedSampleNum << endl;
 	_classNum = classNum;
 	_featureId = -1;
 	_threshold = -1;
@@ -105,10 +103,6 @@ void Node::calculateGainInfo(Node **tree, int id, float minInfoGain) {
 	int* leftProbs = new int[_classNum];
 	int* rightProbs = new int[_classNum];
 
-	float innerMaxInfoGain = 0.0;
-	int innerMaxSampleIndexOnLeft = -1;
-	int innerMaxFeatureId = -1;
-	float innerMaxThreshold = 0.0;
 
 	float maxInfoGain = 0.0;
 	int maxSampleIndexOnLeft = -1;
@@ -118,6 +112,11 @@ void Node::calculateGainInfo(Node **tree, int id, float minInfoGain) {
 	calculateParameter();
 
 	for (int i = 0; i < featureNum; i++) {
+		float innerMaxInfoGain = 0.0;
+		int innerMaxSampleIndexOnLeft = -1;
+		int innerMaxFeatureId = -1;
+		float innerMaxThreshold = 0.0;
+		
 		int featureId = _sample->_featureIndex[i];
 		sortSample(featureId);
 		for (int j = 0; j < _classNum; j++) {
@@ -180,6 +179,8 @@ void Node::calculateGainInfo(Node **tree, int id, float minInfoGain) {
 		delete rightSample;
 	}
 	_sample->releaseIndex();
+	delete _sample;
+	_sample = NULL;
 
 }
 
